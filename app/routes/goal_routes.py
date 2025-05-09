@@ -10,38 +10,38 @@ bp = Blueprint("goals_bp", __name__, url_prefix="/goals")
 
 
 @bp.post("")
-def create_task():
+def create_goal():
     request_body = request.get_json()
     return create_model(Goal, request_body)
 
 
 @bp.get("")
-def get_all_tasks():
+def get_all_goals():
     return get_models_with_filters(Goal, request.args)
 
 
 @bp.get("/<id>")
-def get_one_task(id):
+def get_one_goal(id):
     goal = validate_model(Goal, id)
 
     return {"goal": goal.to_dict()}
 
 
 @bp.put("/<id>")
-def update_task(id):
-    task = validate_model(Goal, id)
+def update_goal(id):
+    goal = validate_model(Goal, id)
     request_body = request.get_json()
 
-    task.title = request_body["title"]
+    goal.title = request_body["title"]
     db.session.commit()
 
     return Response(status=204, mimetype="application/json")
 
 
 @bp.delete("/<id>")
-def delete_task(id):
-    task = validate_model(Goal, id)
-    db.session.delete(task)
+def delete_goal(id):
+    goal = validate_model(Goal, id)
+    db.session.delete(goal)
     db.session.commit()
 
     return Response(status=204, mimetype="application/json")
