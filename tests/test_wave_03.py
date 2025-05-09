@@ -100,7 +100,7 @@ def test_mark_complete_missing_task(client):
     # **Complete test with assertion about response body***************
     # *****************************************************************
     assert response_body == {
-        "details": "Task 1 not found"
+        "message": "Task 1 not found"
     }
 
 
@@ -118,5 +118,5 @@ def test_mark_incomplete_missing_task(client):
     # **Complete test with assertion about response body***************
     # *****************************************************************
     assert response_body == {
-        "details": "Task 1 not found"
+        "message": "Task 1 not found"
     }

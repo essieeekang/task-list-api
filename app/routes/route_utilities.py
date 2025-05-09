@@ -13,7 +13,7 @@ def validate_model(cls, model_id):
     model = db.session.scalar(query)
 
     if not model:
-        response = {"details": f"{cls.__name__} {model_id} not found"}
+        response = {"message": f"{cls.__name__} {model_id} not found"}
         abort(make_response(response, 404))
 
     return model

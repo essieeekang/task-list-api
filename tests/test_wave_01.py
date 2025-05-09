@@ -66,7 +66,7 @@ def test_get_task_not_found(client):
     # **Complete test with assertion about response body***************
     # *****************************************************************
     assert response_body == {
-        "details": "Task 1 not found"
+        "message": "Task 1 not found"
     }
 
 
@@ -137,7 +137,7 @@ def test_update_task_not_found(client):
     # **Complete test with assertion about response body***************
     # *****************************************************************
     assert response_body == {
-        "details": "Task 1 not found"
+        "message": "Task 1 not found"
     }
 
 
@@ -166,7 +166,7 @@ def test_delete_task_not_found(client):
     # **Complete test with assertion about response body***************
     # *****************************************************************
     assert response_body == {
-        "details": "Task 1 not found"
+        "message": "Task 1 not found"
     }
 
     assert db.session.scalars(db.select(Task)).all() == []
