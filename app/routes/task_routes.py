@@ -3,6 +3,9 @@ from app.models.task import Task
 from .route_utilities import validate_model, create_model
 from .route_utilities import get_models_with_filters
 from ..db import db
+from datetime import datetime
+import requests
+import os
 
 bp = Blueprint("tasks_bp", __name__, url_prefix="/tasks")
 
@@ -44,5 +47,33 @@ def delete_task(id):
     task = validate_model(Task, id)
     db.session.delete(task)
     db.session.commit()
+
+    return Response(status=204, mimetype="application/json")
+
+
+@bp.patch("/<id>/mark_incomplete")
+def marks_task_incomplete(id):
+    task = validate_model(Task, id)
+    task.completed_at = None
+    db.session.commit()
+
+    return Response(status=204, mimetype="application/json")
+
+
+@bp.patch("/<id>/mark_complete")
+def marks_task_complete(id):
+    task = validate_model(Task, id)
+    task.completed_at = datetime.now()
+    db.session.commit()
+
+    data = {
+        "token": os.environ.get('SLACKBOT_TOKEN'),
+        "channel": "all-ada-testing",
+        "text": f"Someone just complete the task {task.title}"
+    }
+
+    requests.post(
+        "https://slack.com/api/chat.postMessage",
+        data=data)
 
     return Response(status=204, mimetype="application/json")

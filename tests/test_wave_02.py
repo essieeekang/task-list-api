@@ -1,4 +1,4 @@
-# import pytest
+import pytest
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
