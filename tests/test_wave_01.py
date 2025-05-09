@@ -1,4 +1,5 @@
 from app.models.task import Task
+from sqlalchemy import null
 from app.db import db
 import pytest
 
@@ -204,3 +205,40 @@ def test_create_task_must_contain_description(client):
         "details": "Invalid data"
     }
     assert db.session.scalars(db.select(Task)).all() == []
+
+
+# ----- Added Tests ------
+def test_get_task_invalid(client):
+    # Act
+    response = client.get("/tasks/cat")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {
+        "message": "Task cat invalid"
+    }
+
+
+def test_update_task_invalid(client):
+    # Act
+    response = client.put("/tasks/cat")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {
+        "message": "Task cat invalid"
+    }
+
+
+def test_delete_task_invalid(client):
+    # Act
+    response = client.delete("/tasks/cat")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {
+        "message": "Task cat invalid"
+    }

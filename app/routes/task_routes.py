@@ -66,14 +66,20 @@ def marks_task_complete(id):
     task.completed_at = datetime.now()
     db.session.commit()
 
+    send_slack_notif(task)
+
+    return Response(status=204, mimetype="application/json")
+
+
+def send_slack_notif(task):
     data = {
         "token": os.environ.get('SLACKBOT_TOKEN'),
-        "channel": "all-ada-testing",
+        "channel": os.environ.get('SLACK_CHANNEL'),
         "text": f"Someone just complete the task {task.title}"
     }
 
-    requests.post(
+    response = requests.post(
         "https://slack.com/api/chat.postMessage",
         data=data)
 
-    return Response(status=204, mimetype="application/json")
+    return response

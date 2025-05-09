@@ -1,26 +1,19 @@
 # There are no tests for wave 4.
-import unittest
-from unittest.mock import Mock, patch
-from datetime import datetime
+from app.routes.task_routes import send_slack_notif
 from app.models.task import Task
-from app.db import db
-import pytest
 
-def test_mark_complete_on_completed_task(client, one_task):
-    # Arrange
-    """
-    The future Wave 4 adds special functionality to this route,
-    so for this test, we need to set-up "mocking."
 
-    Mocking will help our tests work in isolation, which is a
-    good thing!
-
-    We need to mock any POST requests that may occur during this
-    test (due to Wave 4).
-
-    There is no action needed here, the tests should work as-is.
-    """
-
+# ------ Added Tests -------
+def test_slack_notif_successful(client, one_task):
+    # Arrange and Act
     response = client.patch("/tasks/1/mark_complete")
 
     assert response.status_code == 204
+
+
+def test_send_slack_notif_helper_success(client):
+    task = Task(title="Task", description="Task description")
+    response = send_slack_notif(task)
+
+    assert response.status_code == 200
+    assert response.ok

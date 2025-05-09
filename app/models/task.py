@@ -30,14 +30,8 @@ class Task(db.Model):
 
     @classmethod
     def from_dict(cls, task_data):
-        if "completed_at" in task_data:
-            new_task = cls(
-                title=task_data["title"],
-                description=task_data["description"],
-                completed_at=task_data["completed_at"])
-        else:
-            new_task = cls(
-                title=task_data["title"],
-                description=task_data["description"])
+        new_task = cls(
+            title=task_data["title"],
+            description=task_data["description"])
 
         return new_task
